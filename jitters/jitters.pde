@@ -9,8 +9,8 @@ float lifeSpan;
 float alive;
 
 void jitter() {
-  circleSpeed = random(1, 10);
   circleSize = random(10, 200);
+  circleSpeed = random(2, circleSize/4);
   circleX = random(circleSize/2, width-(circleSize/2));
   circleY = random(circleSize/2, height-(circleSize/2));
   r = random(255);
@@ -25,15 +25,15 @@ void mouseClicked () {
 }
 
 void setup() {
-  fullScreen();
-  //size(1200,900);
+  //fullScreen();
+  size(1200,900);
   background(0);
   jitter();
 }
 
 void draw() {
   stroke(0, 0);
-  fill(0, 4);
+  fill(10, 1);
   rect(0, 0, width, height);
 
   stroke(0, 0);
@@ -58,5 +58,6 @@ void draw() {
     circleX = circleX + random(-circleSpeed, circleSpeed);
     circleY = circleY + random(-circleSpeed, circleSpeed);
   }
+  
   delay(100);
 }
