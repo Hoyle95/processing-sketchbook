@@ -3,17 +3,15 @@ class Bubble {
   float y;
   float size;
   float speed;
-  float delay;
   float r;
   float g;
   float b;
   
   Bubble() {
-    delay = random(0,height);
-    speed = random(5);
+    speed = random(0.5,5);
     size = random(10,100);
     x = random(0+(size/2), width-(size/2));
-    y = height+(size/2)+delay;
+    y = height+(size/2);
     r = random(150,200);
     g = random(100,200);
     b = random(200,250);
@@ -36,6 +34,17 @@ class Bubble {
     
     if (y < 0-(size/2)) {
       y = height + (size/2);
+    }
+  }
+    
+  boolean clicked() {
+    float distance = dist(mouseX, mouseY, x, y);
+      
+    if (distance < size/2) {
+      y = height + (size/2);
+      return true;
+    } else {
+      return false;
     }
   }
 }
