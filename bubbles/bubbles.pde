@@ -1,3 +1,5 @@
+import processing.sound.*
+SoundFile pop;
 boolean hasClicked;
 int maxBubbles;
 int numberOfBubbles;
@@ -7,9 +9,8 @@ Bubble[] bubbles;
 void setup() {
   //fullScreen();
   size(1200, 900);
-
+  pop = new SoundFile(this, "assets/pop.wav");
   hasClicked = false;
-
   maxBubbles = 1000;
   numberOfBubbles = 0;
   bubblesPopped = 0;
