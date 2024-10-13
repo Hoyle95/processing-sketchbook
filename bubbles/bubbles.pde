@@ -1,5 +1,6 @@
-import processing.sound.*
+import processing.sound.*;
 SoundFile pop;
+SoundFile backgroundSong;
 boolean hasClicked;
 int maxBubbles;
 int numberOfBubbles;
@@ -9,7 +10,8 @@ Bubble[] bubbles;
 void setup() {
   //fullScreen();
   size(1200, 900);
-  pop = new SoundFile(this, "assets/pop.wav");
+  pop = new SoundFile(this, "assets/sound/pop.wav");
+  backgroundSong = new SoundFile(this, "assets/sound/burning_purple.wav");
   hasClicked = false;
   maxBubbles = 1000;
   numberOfBubbles = 0;
@@ -58,6 +60,7 @@ void draw() {
 void mousePressed() {
   if (!hasClicked) {
     hasClicked = true;
+    backgroundSong.play();
   }
 
   if ((!clickedOnBubble())&&(numberOfBubbles<maxBubbles)) {
@@ -81,6 +84,7 @@ boolean clickedOnBubble() {
     if (bubbles[i].clicked()) {
       clicked = true;
       bubblesPopped++;
+      pop.play();
     }
   }
   return clicked;
