@@ -4,7 +4,7 @@ A simple bubble simulation with sound effects, music & poppable fun!
 
 ## Download:
 
-[Bubbles-v0.1-beta-Win64.zip](https://drive.google.com/file/d/1Zek0d9cNhdfV5ya9AVDhmMxICtgNIfzB/view?usp=sharing)
+[Bubbles-v0.1-beta-Win64.zip](https://github.com/Hoyle95/processing-sketchbook/releases/download/bubbles/Bubbles-v0.1-beta-Win64.zip)
 
 ## Credits & special thanks too:
 

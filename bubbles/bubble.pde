@@ -10,7 +10,7 @@ class Bubble {
   
   Bubble() {
     speed = random(0.5,5);
-    size = random(10,100);
+    size = random(15,100);
     x = random(0+(size/2), width-(size/2));
     y = height+(size/2);
     r = random(150,200);
@@ -42,9 +42,7 @@ class Bubble {
     
   boolean clicked() {
     float distance = dist(mouseX, mouseY, x, y);
-      
-    if (distance < size/2) {
-      y = height + (size/2);
+    if ((distance < size/2)&&enabled) {
       enabled = false;
       return true;
     } else {
