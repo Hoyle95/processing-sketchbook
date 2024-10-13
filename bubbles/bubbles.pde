@@ -1,6 +1,7 @@
 boolean hasClicked;
 int maxBubbles;
 int numberOfBubbles;
+int bubblesPopped;
 Bubble[] bubbles;
 
 void setup() {
@@ -11,6 +12,7 @@ void setup() {
 
   maxBubbles = 1000;
   numberOfBubbles = 0;
+  bubblesPopped = 0;
   bubbles = new Bubble[maxBubbles];
 
   for (int i = 0; i < bubbles.length; i++) {
@@ -19,21 +21,37 @@ void setup() {
 }
 
 void draw() {
-  stroke(0);
+  noStroke();
   fill(250);
   rect(0, 0, width, height);
 
   grid(100);
 
-  if (!hasClicked) {
-    fill(100, 100);
-    textSize(128);
-    text("Click me", width/2 - 200, height/2);
-  }
-
   for (int i = 0; i < numberOfBubbles; i++) {
     bubbles[i].animate();
   }
+  
+  //UI
+  if (!hasClicked) {
+    fill(100, 100);
+    textSize(128);
+    textAlign(CENTER);
+    text("Click me", width/2, height/2);
+  }
+  
+  if (bubblesPopped == maxBubbles) {
+    fill(250 ,100, 150);
+    textSize(128);
+    textAlign(CENTER);
+    text("YOU WIN!", width/2, height/2);
+  }
+  
+  fill(250 ,100, 150);
+  textSize(40);
+  textAlign(LEFT);
+  text("Bubbles: "+numberOfBubbles, 20, 50);
+  textAlign(RIGHT);
+  text(bubblesPopped + " Popped!", width-20, 50);
 }
 
 void mousePressed() {
@@ -41,7 +59,7 @@ void mousePressed() {
     hasClicked = true;
   }
 
-  if (!clickedOnBubble()) {
+  if ((!clickedOnBubble())&&(numberOfBubbles<maxBubbles)) {
     numberOfBubbles++;
   }
 }
@@ -61,6 +79,7 @@ boolean clickedOnBubble() {
   for (int i = 0; i < numberOfBubbles; i++) {
     if (bubbles[i].clicked()) {
       clicked = true;
+      bubblesPopped++;
     }
   }
   return clicked;

@@ -6,6 +6,7 @@ class Bubble {
   float r;
   float g;
   float b;
+  boolean enabled = true;
   
   Bubble() {
     speed = random(0.5,5);
@@ -18,22 +19,24 @@ class Bubble {
   }
   
   void animate() {
-    stroke(r,g,b);
-    fill(r, g, b, 100);
-    ellipse(x,y,size,size);
-    y -= random(speed);
-    x += random(-speed/2, speed/2);
-    
-    if (x < 0+(size/2)) {
-      x += speed;
-    }
-    
-    if (x > width-(size/2)) {
-      x -= speed;
-    }
-    
-    if (y < 0-(size/2)) {
-      y = height + (size/2);
+    if (enabled) {
+      stroke(r,g,b);
+      fill(r, g, b, 100);
+      ellipse(x,y,size,size);
+      y -= random(speed);
+      x += random(-speed/2, speed/2);
+      
+      if (x < 0+(size/2)) {
+        x += speed;
+      }
+      
+      if (x > width-(size/2)) {
+        x -= speed;
+      }
+      
+      if (y < 0-(size/2)) {
+        y = height + (size/2);
+      }
     }
   }
     
@@ -42,6 +45,7 @@ class Bubble {
       
     if (distance < size/2) {
       y = height + (size/2);
+      enabled = false;
       return true;
     } else {
       return false;
