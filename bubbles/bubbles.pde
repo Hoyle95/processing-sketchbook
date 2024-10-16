@@ -16,9 +16,14 @@ int numberOfBubbles;
 int bubblesPopped;
 Bubble[] bubbles;
 
+//button
+boolean musicEnabled;
+PImage muteButton;
+
 void setup() {
   //fullScreen();
   size(1200, 900);
+  musicEnabled = true;
 
   //load sounds
   pop = new SoundFile(this, "assets/sound/pop.wav");
@@ -29,6 +34,9 @@ void setup() {
   round = 0;
   numberOfBubbles = 0;
   bubblesPopped = 0;
+  
+  //load images
+  muteButton = loadImage("assets/images/mute.png");
 }
 
 void draw() {
@@ -54,7 +62,7 @@ void draw() {
     text("Click me", width/2, height/2);
   } else {
     //start music once round 1 starts
-    if (!backgroundSong.isPlaying()) {
+    if ((!backgroundSong.isPlaying())&&(musicEnabled)) {
       backgroundSong.play();
     }
   }
@@ -88,12 +96,14 @@ void draw() {
   textAlign(CENTER);
   text("Round "+round, width/2, 50);
   
-  //UI buttons
+  //mute button
   noFill();
   stroke(0);
-  rect(width-70,height-70,50,50);
-  rect(width-140,height-70,50,50);
-  rect(width-210,height-70,50,50);
+  image(muteButton, width-70,height-70);
+  if (!musicEnabled) {
+    line(width-70,height-70,width-20,height-20);
+    line(width-20,height-70,width-70,height-20);
+  }
 }
 
 void mousePressed() {
@@ -126,6 +136,16 @@ void mousePressed() {
         bubblesPopped++;
         pop.play(map(bubbles[i].size, 15, 100, 2.5, 0.5));
       }
+    }
+  }
+  
+  //mute button
+  if ((mouseX > width-70)&&(mouseX < width-20)&&(mouseY > height-70)&&(mouseY < height-20)) {
+    if (musicEnabled) {
+      musicEnabled = false;
+      backgroundSong.stop();
+    } else {
+      musicEnabled = true;
     }
   }
 }
