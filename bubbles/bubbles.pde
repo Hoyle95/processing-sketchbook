@@ -7,6 +7,9 @@ SoundFile backgroundSong;
 boolean roundEnd;
 int round;
 
+//tiles
+int tileSize = 100;
+
 //bubbles
 int maxBubbles;
 int numberOfBubbles;
@@ -26,35 +29,47 @@ void setup() {
   round = 0;
   numberOfBubbles = 0;
   bubblesPopped = 0;
-
-  //spawn bubbles
-  bubbles = new Bubble[maxBubbles];
-  for (int i = 0; i < bubbles.length; i++) {
-    bubbles[i] = new Bubble();
-  }
 }
 
 void draw() {
+  //clear screen
   noStroke();
   fill(250);
   rect(0, 0, width, height);
-  grid(100);
-
-  for (int i = 0; i < numberOfBubbles; i++) {
-    bubbles[i].animate();
-  }
-
+  
+  //draw background tiles
+  for (int y = 0; y < height; y += tileSize) {
+    for (int x = 0; x < width; x += tileSize) {
+      fill(240);
+      stroke(100);
+      rect(x, y, tileSize, tileSize);
+    }
+  };
+  
+  //draw click me prompt at start
   if (round == 0) {
     fill(100, 100);
     textSize(128);
     textAlign(CENTER);
     text("Click me", width/2, height/2);
   } else {
-    if(!backgroundSong.isPlaying()) {
+    //start music once round 1 starts
+    if (!backgroundSong.isPlaying()) {
       backgroundSong.play();
     }
   }
+  
+  //draw and update active bubbles
+  for (int i = 0; i < numberOfBubbles; i++) {
+    bubbles[i].animate();
+  }
+  
+  //bubble machine
+  if ((numberOfBubbles<maxBubbles)&&(round!=0)&&(random(0, 100)<6)) {
+    numberOfBubbles++;
+  }
 
+  //if all bubbles are popped, show victory screen
   if ((bubblesPopped == maxBubbles)&&(round!=0)) {
     fill(250, 100, 150);
     textSize(128);
@@ -63,6 +78,7 @@ void draw() {
     roundEnd = true;
   }
 
+  //UI text
   fill(250, 100, 150);
   textSize(40);
   textAlign(LEFT);
@@ -71,14 +87,20 @@ void draw() {
   text(bubblesPopped + " Popped", width-20, 50);
   textAlign(CENTER);
   text("Round "+round, width/2, 50);
-
-  spawnBubbles();
+  
+  //UI buttons
+  noFill();
+  stroke(0);
+  rect(width-70,height-70,50,50);
+  rect(width-140,height-70,50,50);
+  rect(width-210,height-70,50,50);
 }
 
 void mousePressed() {
+  //if round has ended
   if (roundEnd) {
-
-    if (round < 0) {
+    //waits for click to start game, or starts the next round
+    if (round!=0) {
       round++;
       roundEnd = false;
       maxBubbles*=2;
@@ -89,37 +111,21 @@ void mousePressed() {
         bubbles[i] = new Bubble();
       }
     } else {
+      roundEnd = false;
       maxBubbles = 10;
       round++;
+      bubbles = new Bubble[maxBubbles];
+      for (int i = 0; i < bubbles.length; i++) {
+        bubbles[i] = new Bubble();
+      }
     }
-  }
-  clickedOnBubble();
-}
-
-void grid(int size) {
-  for (int y = 0; y < height; y += size) {
-    for (int x = 0; x < width; x += size) {
-      fill(240);
-      stroke(100);
-      rect(x, y, size, size);
+  } else {
+    //chick if click is inside of a bubble
+    for (int i = 0; i < numberOfBubbles; i++) {
+      if (bubbles[i].clicked()) {
+        bubblesPopped++;
+        pop.play(map(bubbles[i].size, 15, 100, 2.5, 0.5));
+      }
     }
-  }
-}
-
-boolean clickedOnBubble() {
-  boolean clicked = false;
-  for (int i = 0; i < numberOfBubbles; i++) {
-    if (bubbles[i].clicked()) {
-      clicked = true;
-      bubblesPopped++;
-      pop.play(map(bubbles[i].size, 15, 100, 2.5, 0.5));
-    }
-  }
-  return clicked;
-}
-
-void spawnBubbles() {
-  if ((numberOfBubbles<maxBubbles)&&(round!=0)&&(random(0, 100)<6)) {
-    numberOfBubbles++;
   }
 }
